@@ -1,0 +1,64 @@
+#include <iostream>
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+    
+    Node(int value) : data(value), prev(nullptr), next(nullptr) {}
+};
+Node* reverseDoublyLinkedList(Node* head) {
+    Node* current = head;
+    Node* temp = nullptr;
+    while (current != nullptr) {
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;
+        current = current->prev;
+    }
+    if (temp != nullptr) {
+        head = temp->prev;
+    }
+
+    return head;
+}
+void printDoublyLinkedList(Node* head) {
+    while (head != nullptr) {
+        std::cout << head->data << " ";
+        head = head->next;
+    }
+    std::cout << std::endl;
+}
+Node* insertAtEnd(Node* head, int value) {
+    Node* newNode = new Node(value);
+
+    if (head == nullptr) {
+        return newNode;
+    }
+
+    Node* temp = head;
+    while (temp->next != nullptr) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    return head;
+}
+
+int main() {
+    Node* head = nullptr;
+    head = insertAtEnd(head, 1);
+    head = insertAtEnd(head, 2);
+    head = insertAtEnd(head, 3);
+    head = insertAtEnd(head, 4);
+
+    std::cout << "Original doubly linked list: ";
+    printDoublyLinkedList(head);
+    head = reverseDoublyLinkedList(head);
+
+    std::cout << "Reversed doubly linked list: ";
+    printDoublyLinkedList(head);
+
+    return 0;
+}
